@@ -34,3 +34,49 @@ float evaluarPostfija(
             float valor = obtenerValorVariable(variables, totalVariables, actual);
             push(pilaNum, &valor, sizeof(float));
         } 
+        else if (actual == '+' || actual == '-' || actual == '*' || actual == '/' || actual == '^') {
+            
+            float b = 0.0; 
+            if (pilaVacia(pilaNum) == 0) {
+                b = ((float)pilaNum->tope->dato); 
+                pop(pilaNum);
+            }
+
+            float a = 0.0; 
+            if (pilaVacia(pilaNum) == 0) {
+                a = ((float)pilaNum->tope->dato);
+                pop(pilaNum); 
+            }
+
+            float res = 0.0; 
+            
+            switch (actual) {
+                case '+': res = a + b; break;
+                case '-': res = a - b; break;
+                case '*': res = a * b; break;
+                case '/':
+                    if (b == 0.0) {
+                        printf("Como vas a dividir entre 0??? :c.\n");
+                        destruirPila(pilaNum);
+                        return 0.0;
+                    }
+                    res = a / b;
+                    break;
+                case '^': res = (float)pow((double)a, (double)b); break; 
+            }
+
+            push(pilaNum, &res, sizeof(float));
+        }
+    }
+
+    float fin = 0.0;
+    if (pilaVacia(pilaNum) == 0) {
+        fin = ((float)pilaNum->tope->dato);
+        pop(pilaNum);
+    } else {
+        printf("Error: expresion vacia o invalida.\n");
+    }
+
+    destruirPila(pilaNum);
+    return fin;
+}
