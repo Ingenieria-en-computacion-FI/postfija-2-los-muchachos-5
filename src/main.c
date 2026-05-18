@@ -13,7 +13,7 @@ int main() {
     char expresion[MAX_EXPR];
 
     cargarArchivo(
-        "input/caso1.txt",
+        "../input/caso1.txt",
         variables,
         &totalVariables,
         expresion

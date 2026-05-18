@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 #include "../include/evaluator.h"
 #include "../include/pila.h"
@@ -38,13 +37,13 @@ float evaluarPostfija(
             
             float b = 0.0; 
             if (pilaVacia(pilaNum) == 0) {
-                b = ((float)pilaNum->tope->dato); 
+                b = *((float*)pilaNum->tope->dato);  
                 pop(pilaNum);
             }
 
             float a = 0.0; 
             if (pilaVacia(pilaNum) == 0) {
-                a = ((float)pilaNum->tope->dato);
+                a = *((float*)pilaNum->tope->dato);  // bien
                 pop(pilaNum); 
             }
 
@@ -62,7 +61,12 @@ float evaluarPostfija(
                     }
                     res = a / b;
                     break;
-                case '^': res = (float)pow((double)a, (double)b); break; 
+                case '^': 
+                    res = 1;
+                    for (int i = 0; i < (int)b; i++)
+                        res *= a;
+                    break;
+
             }
 
             push(pilaNum, &res, sizeof(float));
@@ -71,7 +75,7 @@ float evaluarPostfija(
 
     float fin = 0.0;
     if (pilaVacia(pilaNum) == 0) {
-        fin = ((float)pilaNum->tope->dato);
+        fin = *((float*)pilaNum->tope->dato);  
         pop(pilaNum);
     } else {
         printf("Error: expresion vacia o invalida.\n");
